@@ -13,7 +13,7 @@
 
 #define GAS_SENSOR_UUID_BASE    {0x3d, 0x63, 0x13, 0xd5, 0xd7, 0xcf, 0x49, 0x16, 0xab, 0xf1, 0xa9, 0x6b, 0x47, 0x8f, 0x8b, 0xf3}
 #define GAS_SENSOR_UUID         0x1450
-#define HUMITEMP_CHAR_UUID      0x1451
+#define HUMITEMP_CHAR_UUID      0x1451 /**< Humidity and temperature characteristic */
 
 /**@brief   Macro for defining a ble_cus instance.
  *
@@ -58,4 +58,4 @@ typedef struct ble_gas_s ble_gas_t;
  * @param p_cus_init 
  * @return uint32_t 
  */
-uint32_t ble_cus_init(ble_gas_t * p_gas_s, const ble_gas_init_t * p_gas_init);
+uint32_t ble_gas_init(ble_gas_t * p_gas_s, const ble_gas_init_t * p_gas_init);
