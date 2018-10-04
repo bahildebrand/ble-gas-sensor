@@ -173,6 +173,28 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
     }
 }
 
+static void on_gas_evt(ble_gas_t     * p_gas_service,
+                       ble_gas_evt_t * p_evt)
+{
+    switch(p_evt->evt_type)
+    {
+        case BLE_GAS_EVT_NOTIFICATION_ENABLED:
+            break;
+
+        case BLE_GAS_EVT_NOTIFICATION_DISABLED:
+            break;
+        
+        case BLE_GAS_EVT_CONNECTED:
+            break;
+
+        case BLE_GAS_EVT_DISCONNECTED:
+              break;
+
+        default:
+              // No implementation needed.
+              break;
+    }
+}
 
 /**@brief Function for the Timer initialization.
  *
@@ -297,6 +319,11 @@ static void services_init(void)
 	
     err_code = ble_gas_init(&m_gas_s, &gas_init);
     APP_ERROR_CHECK(err_code);	
+
+    gas_init.evt_handler                = on_gas_evt;
+
+    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&gas_init.custom_value_char_attr_md.read_perm);
+    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&gas_init.custom_value_char_attr_md.write_perm);
 }
 
 

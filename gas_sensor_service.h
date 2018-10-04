@@ -27,8 +27,31 @@ static ble_gas_t _name;
  * @brief 
  * 
  */
+typedef struct ble_gas_s ble_gas_t;
+
+typedef enum
+{
+    BLE_GAS_EVT_NOTIFICATION_ENABLED,                             /**< Custom value notification enabled event. */
+    BLE_GAS_EVT_NOTIFICATION_DISABLED,
+    BLE_GAS_EVT_DISCONNECTED,
+    BLE_GAS_EVT_CONNECTED
+} ble_gas_evt_type_t;
+
 typedef struct
 {
+    ble_gas_evt_type_t evt_type;                                  /**< Type of event. */
+} ble_gas_evt_t;
+
+/**@brief Custom Service event handler type. */
+typedef void (*ble_gas_evt_handler_t) (ble_gas_t * p_cus, ble_gas_evt_t * p_evt);
+
+/**
+ * @brief 
+ * 
+ */
+typedef struct
+{
+    ble_gas_evt_handler_t         evt_handler; 
     uint8_t                       initial_custom_value;           /**< Initial custom value */
     ble_srv_cccd_security_mode_t  custom_value_char_attr_md;     /**< Initial security level for Custom characteristics attribute */
 } ble_gas_init_t;
@@ -39,6 +62,7 @@ typedef struct
  */
 struct ble_gas_s
 {
+    ble_gas_evt_handler_t         evt_handler; 
     uint16_t                      service_handle;                 /**< Handle of Custom Service (as provided by the BLE stack). */
     ble_gatts_char_handles_t      custom_value_handles;           /**< Handles related to the Custom Value characteristic. */
     uint16_t                      conn_handle;                    /**< Handle of the current connection (as provided by the BLE stack, is BLE_CONN_HANDLE_INVALID if not in a connection). */
@@ -48,14 +72,12 @@ struct ble_gas_s
 /**
  * @brief 
  * 
- */
-typedef struct ble_gas_s ble_gas_t;
-
-/**
- * @brief 
- * 
  * @param p_cus 
  * @param p_cus_init 
  * @return uint32_t 
  */
 uint32_t ble_gas_init(ble_gas_t * p_gas_s, const ble_gas_init_t * p_gas_init);
+
+void ble_gas_on_ble_evt( ble_evt_t * p_ble_evt, void * p_context);
+
+uint32_t ble_gas_custom_value_update(ble_gas_t * p_cus, uint8_t custom_value);
